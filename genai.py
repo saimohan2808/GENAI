@@ -1,3 +1,4 @@
+import os
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -6,9 +7,17 @@ import google.generativeai as genai
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 from urllib.parse import urljoin, urlparse
+from dotenv import load_dotenv
 
-# Configure Gemini API
-genai.configure(api_key="AIzaSyAJmdXxuuzsskSI4QoLke65myLaLmYcB_s")
+# Load environment variables
+load_dotenv()
+
+# Get API key from environment variables
+api_key = os.getenv("GEMINI_API_KEY")
+if api_key:
+    genai.configure(api_key=api_key)
+else:
+    raise ValueError("GEMINI_API_KEY is missing in the environment variables.")
 
 RELEVANT_KEYWORDS = ["mission", "values", "about", "history", "leadership", "team", "executives", "awards", "products", "services"]
 
@@ -111,8 +120,3 @@ urls = [
     "https://hmgroup.com"
 ]
 main(urls)
-
-
-
-
-
